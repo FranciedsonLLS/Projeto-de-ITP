@@ -4,14 +4,14 @@
 #include <string.h>
 #define MAX_NOME_COMPLETO 120
 
-struct Assento **inicializarMatriz(int numFileiras, int numAssentosPorFileira) {
+Assento **inicializarMatriz(int numFileiras, int numAssentosPorFileira) {
     if (numFileiras > 26 || numAssentosPorFileira > 99) {
         return NULL;
     }
 
-    struct Assento **matriz = (struct Assento **)malloc(numFileiras * sizeof(struct Assento *));
+    Assento **matriz = (Assento **)malloc(numFileiras * sizeof(Assento *));
     for (int i = 0; i < numFileiras; ++i) {
-        matriz[i] = (struct Assento *)malloc(numAssentosPorFileira * sizeof(struct Assento));
+        matriz[i] = (Assento *)malloc(numAssentosPorFileira * sizeof(Assento));
         for (int j = 0; j < numAssentosPorFileira; ++j) {
             matriz[i][j].reservado = 0;
             matriz[i][j].fileira = i;
@@ -23,15 +23,15 @@ struct Assento **inicializarMatriz(int numFileiras, int numAssentosPorFileira) {
     return matriz;
 }
 
-struct Teatro criarTeatro(int numFileiras, int numAssentosPorFileira) {
-    struct Teatro teatro;
+Teatro criarTeatro(int numFileiras, int numAssentosPorFileira) {
+    Teatro teatro;
     teatro.numFileiras = numFileiras;
     teatro.numAssentosPorFileira = numAssentosPorFileira;
     teatro.assentos = inicializarMatriz(numFileiras, numAssentosPorFileira);
     return teatro;
 }
 
-void exibirTeatro(struct Teatro teatro) {
+void exibirTeatro(Teatro teatro) {
     printf("Mapa do Teatro:\n");
     for (int i = 0; i < teatro.numFileiras; ++i) {
         for (int j = 0; j < teatro.numAssentosPorFileira; ++j) {
@@ -42,14 +42,14 @@ void exibirTeatro(struct Teatro teatro) {
     printf("\n");
 }
 
-void liberarMatriz(struct Assento **matriz, int linhas) {
+void liberarMatriz(Assento **matriz, int linhas) {
     for (int i = 0; i < linhas; ++i) {
         free(matriz[i]);
     }
     free(matriz);
 }
 
-int reservarAssento(struct Teatro t, int linha, int coluna, char *nome) {
+int reservarAssento(Teatro t, int linha, int coluna, char *nome) {
     if (linha < 0 || linha >= t.numFileiras || coluna < 0 || coluna >= t.numAssentosPorFileira) {
         return 0;
     }
@@ -65,7 +65,7 @@ int reservarAssento(struct Teatro t, int linha, int coluna, char *nome) {
     }
 }
 
-int reservarAssentosConsecutivos(struct Teatro t, int linha, int coluna, int n, char *nome) {
+int reservarAssentosConsecutivos(Teatro t, int linha, int coluna, int n, char *nome) {
     if (linha < 0 || linha >= t.numFileiras || coluna < 0 || coluna >= t.numAssentosPorFileira) {
         return 0;
     }
@@ -86,7 +86,7 @@ int reservarAssentosConsecutivos(struct Teatro t, int linha, int coluna, int n, 
     return 1;
 }
 
-struct Assento *reservarAssentoPeloSistema(struct Teatro t, char *nome) {
+Assento *reservarAssentoPeloSistema(Teatro t, char *nome) {
     for (int i = 0; i < t.numFileiras; ++i) {
         for (int j = 0; j < t.numAssentosPorFileira; ++j) {
             if (!t.assentos[i][j].reservado) {
@@ -102,8 +102,8 @@ struct Assento *reservarAssentoPeloSistema(struct Teatro t, char *nome) {
     return NULL;
 }
 
-struct Assento **reservarAssentosConsecutivosPeloSistema(struct Teatro t, int n, char *nome) {
-    struct Assento **assentosReservados = (struct Assento **)malloc(n * sizeof(struct Assento *));
+Assento **reservarAssentosConsecutivosPeloSistema(Teatro t, int n, char *nome) {
+    Assento **assentosReservados = (Assento **)malloc(n * sizeof(Assento *));
 
     for (int i = 0; i < t.numFileiras; ++i) {
         for (int j = 0; j <= t.numAssentosPorFileira - n; ++j) {
@@ -134,7 +134,7 @@ struct Assento **reservarAssentosConsecutivosPeloSistema(struct Teatro t, int n,
     return NULL;
 }
 
-int cancelarReserva(struct Teatro t, int linha, int coluna) {
+int cancelarReserva(Teatro t, int linha, int coluna) {
     if (linha < 0 || linha >= t.numFileiras || coluna < 0 || coluna >= t.numAssentosPorFileira) {
         return 0;
     }
@@ -148,7 +148,7 @@ int cancelarReserva(struct Teatro t, int linha, int coluna) {
     }
 }
 
-int cancelarReservas(struct Teatro t, char *nome) {
+int cancelarReservas(Teatro t, char *nome) {
     int totalCancelado = 0;
 
     for (int i = 0; i < t.numFileiras; ++i) {
@@ -164,7 +164,7 @@ int cancelarReservas(struct Teatro t, char *nome) {
     return totalCancelado;
 }
 
-int cancelarTodasAsReservas(struct Teatro t) {
+int cancelarTodasAsReservas(Teatro t) {
     int totalCancelado = 0;
 
     for (int i = 0; i < t.numFileiras; ++i) {
@@ -180,7 +180,7 @@ int cancelarTodasAsReservas(struct Teatro t) {
     return totalCancelado;
 }
 
-int verificarDisponibilidade(struct Teatro t, int linha, int coluna) {
+int verificarDisponibilidade(Teatro t, int linha, int coluna) {
     if (linha < 0 || linha >= t.numFileiras || coluna < 0 || coluna >= t.numAssentosPorFileira) {
         return 0;
     }
@@ -188,7 +188,7 @@ int verificarDisponibilidade(struct Teatro t, int linha, int coluna) {
     return !t.assentos[linha][coluna].reservado;
 }
 
-void consultarAssentosConsecutivos(struct Teatro t, int n) {
+void consultarAssentosConsecutivos(Teatro t, int n) {
     printf("Intervalos de assentos com pelo menos %d assentos disponíveis:\n", n);
 
     for (int i = 0; i < t.numFileiras; ++i) {
@@ -218,7 +218,7 @@ void consultarAssentosConsecutivos(struct Teatro t, int n) {
     printf("\n");
 }
 
-void exibirInformacoes(struct Teatro t) {
+void exibirInformacoes(Teatro t) {
     int reservas = 0;
     int espacosLivres = 0;
     int maiorSequenciaLivre = 0;
@@ -246,7 +246,7 @@ void exibirInformacoes(struct Teatro t) {
     printf("\n");
 }
 
-int salvarEstado(struct Teatro t, char *nomeArquivo) {
+int salvarEstado(Teatro t, char *nomeArquivo) {
     FILE *arquivo = fopen(nomeArquivo, "w");
 
     if (arquivo == NULL) {
@@ -266,8 +266,8 @@ int salvarEstado(struct Teatro t, char *nomeArquivo) {
     return 1;
 }
 
-struct Teatro carregarEstado(char *nomeArquivo) {
-    struct Teatro teatro;
+Teatro carregarEstado(char *nomeArquivo) {
+    Teatro teatro;
     FILE *arquivo = fopen(nomeArquivo, "r");
 
     if (arquivo == NULL) {

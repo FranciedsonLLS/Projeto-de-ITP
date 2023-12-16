@@ -1,7 +1,7 @@
 #define MAX_NOME_COMPLETO 120
 
-typedef struct assento Assento
-typedef struct teatro Teatro
+typedef struct assento Assento;
+typedef struct teatro Teatro;
 
 struct assento {
     int reservado;
